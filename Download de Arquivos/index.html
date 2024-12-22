@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download de Arquivos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centraliza o conteúdo */
+        }
+
+        input[type="url"] {
+            width: calc(100% - 22px); /* Ajusta a largura considerando o padding */
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Inclui padding e borda na largura total */
+        }
+
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover{
+            background-color: #45a049;
+        }
+        #mensagem{
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Baixar Arquivo</h1>
+        <input type="url" id="urlInput" placeholder="Digite o link do arquivo">
+        <button onclick="baixarArquivo()">Baixar</button>
+        <div id="mensagem"></div>
+    </div>
+
+    <script>
+        function baixarArquivo() {
+            const url = document.getElementById("urlInput").value;
+            const mensagemDiv = document.getElementById("mensagem");
+
+            if (!url) {
+                mensagemDiv.textContent = "Por favor, insira um link.";
+                return;
+            }
+            if (!isValidURL(url)) {
+                mensagemDiv.textContent = "Por favor, insira um link válido.";
+                return;
+            }
+            mensagemDiv.textContent = "";
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = url.substring(url.lastIndexOf('/') + 1); // Tenta extrair o nome do arquivo
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function isValidURL(string) {
+            let url;
+            try {
+              url = new URL(string);
+            } catch (_) {
+              return false;  
+            }
+            return url.protocol === "http:" || url.protocol === "https:";
+          }
+    </script>
+</body>
+</html>
